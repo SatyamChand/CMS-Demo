@@ -58,8 +58,6 @@ public class Section {
     @Override
     public String toString() {
         return "{ name:" + id + ", course: " + course + ", head:" + head + ", subject=" + subject + " }";
-    }
-
-    
+    }    
 
 }
