@@ -1,4 +1,4 @@
-package com.cms.config;
+package com.cmsDemo.app.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +25,7 @@ public class SpringFoxConfig {
 				.licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
 				.termsOfServiceUrl("")
 				.version("1.1.0")
-				.contact( new Contact("","","eample@example.com") )
+				.contact( new Contact("","","satyamdeopa@gmail.com") )
 				.build();
 	}
 	

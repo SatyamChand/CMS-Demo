@@ -1,13 +1,13 @@
-package com.cms.service;
+package com.cmsDemo.app.service;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.cms.document.Section;
-import com.cms.repository.SectionRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.cmsDemo.app.model.Section;
+import com.cmsDemo.app.repository.SectionRepository;
 
 @Service
 public class SectionService{
@@ -25,35 +25,35 @@ public class SectionService{
         return section.get();
     }
 
-    public String createSection( Section section ) {
+    public Boolean createSection( Section section ) {
         Optional<Section> existing = sectionRepository.findById(section.getId());
         if( existing.isEmpty() ){
             sectionRepository.save(section);
-            return "{ status: \"success\", id: \""+ section.getId() +"\" }";
+            return true;
         }
         else{
-            return "{ status: \"failed\", id: \""+ section.getId() +"\" }";
+            return false;
         }
     }
 
-    public String updateSection( Section section ) {
+    public Boolean updateSection( Section section ) {
         Optional<Section> existing = sectionRepository.findById(section.getId());
         if( existing.isPresent() ){
             sectionRepository.save(section);
-            return "{ status: \"success\", id: \""+ section.getId() +"\" }";
+            return true;
         }
         else{
-            return "{ status: \"failed\", id: \""+ section.getId() +"\" }";
+            return false;
         }
     }
 
-    public String deleteSection( String id ){
+    public Boolean deleteSection( String id ){
         if( sectionRepository.findById(id).isPresent() ){
             sectionRepository.deleteById(id);
-            return "{ status: \"success\", id: \""+ id +"\" }";
+            return true;
         }
         else{
-            return "{ status: \"failed\", id: \""+ id +"\" }";
+            return false;
         }
     }
 

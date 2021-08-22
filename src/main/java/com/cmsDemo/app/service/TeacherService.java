@@ -1,10 +1,10 @@
-package com.cms.service;
+package com.cmsDemo.app.service;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.cms.document.Teacher;
-import com.cms.repository.TeacherRepository;
+import com.cmsDemo.app.model.Teacher;
+import com.cmsDemo.app.repository.TeacherRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,44 +16,44 @@ public class TeacherService {
     private TeacherRepository teacherRepository;
 
 
-    public List<Teacher> getAllTeacher(){
+    public List<Teacher> getAllTeachers(){
         return teacherRepository.findAll();
     }
 
-    public Teacher getTeacherById( int id ){
+    public Teacher getTeacherById( Long id ){
         Optional<Teacher> teacher = teacherRepository.findById(id);
         return teacher.get();
     }
 
-    public String createTeacher( Teacher teacher ) {
+    public Boolean createTeacher( Teacher teacher ) {
         Optional<Teacher> existing = teacherRepository.findById(teacher.getId());
         if( existing.isEmpty() ){
             teacherRepository.save(teacher);
-            return "{ status: \"success\", id: \""+ teacher.getId() +"\" }";
+            return true;
         }
         else{
-            return "{ status: \"failed\", id: \""+ teacher.getId() +"\" }";
+            return false;
         }
     }
 
-    public String updateTeacher( Teacher teacher ) {
+    public Boolean updateTeacher( Teacher teacher ) {
         Optional<Teacher> existing = teacherRepository.findById(teacher.getId());
         if( existing.isPresent() ){
             teacherRepository.save(teacher);
-            return "{ status: \"success\", id: \""+ teacher.getId() +"\" }";
+            return true;
         }
         else{
-            return "{ status: \"failed\", id: \""+ teacher.getId() +"\" }";
+            return false;
         }
     }
 
-    public String deleteTeacher( int id ){
+    public Boolean deleteTeacher( Long id ){
         if( teacherRepository.findById(id).isPresent() ){
             teacherRepository.deleteById(id);
-            return "{ status: \"success\", id: \""+ id +"\" }";
+            return true;
         }
         else{
-            return "{ status: \"failed\", id: \""+ id +"\" }";
+            return false;
         }
     }
 

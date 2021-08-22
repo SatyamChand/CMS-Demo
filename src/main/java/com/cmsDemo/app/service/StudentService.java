@@ -1,16 +1,15 @@
-package com.cms.service;
+package com.cmsDemo.app.service;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.cms.document.Student;
-import com.cms.repository.StudentRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.ResponseStatusException;
+
+import com.cmsDemo.app.model.Student;
+import com.cmsDemo.app.repository.StudentRepository;
 
 @Service
 public class StudentService {
@@ -19,7 +18,7 @@ public class StudentService {
     private StudentRepository studentRepository;
 
 
-    public List<Student> getAllStudent(){
+    public List<Student> getAllStudents(){
     	List<Student> list = studentRepository.findAll();
     	if( list.size() == 0 ) {
     		throw new ResponseStatusException( HttpStatus.NO_CONTENT, "No entries available" );
@@ -27,7 +26,7 @@ public class StudentService {
         return list;
     }
 
-    public Student getStudentById( int id ){
+    public Student getStudentById( Long id ){
         Optional<Student> student = studentRepository.findById(id);
         if( student.isEmpty() ) {
         	throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Student does not exist");
@@ -35,35 +34,35 @@ public class StudentService {
         return student.get();
     }
 
-    @ResponseStatus( HttpStatus.CREATED )
-    public void createStudent( Student student ) {
+    public Boolean createStudent( Student student ) {
         Optional<Student> existing = studentRepository.findById(student.getId());
         if( !existing.isPresent() ){
             studentRepository.save(student);
+            return true;
         }
         else{
-            throw new ResponseStatusException( HttpStatus.CONFLICT, "Student entry with id : "+ student.getId() +" exists" );
+            return false;
         }
     }
 
-    @ResponseStatus( HttpStatus.OK )
-    public void updateStudent( Student student ) {
+    public Boolean updateStudent( Student student ) {
         Optional<Student> existing = studentRepository.findById(student.getId());
         if( existing.isPresent() ){
             studentRepository.save(student);
+            return true;
         }
         else{
-        	throw new ResponseStatusException(HttpStatus.NOT_MODIFIED, "Student does not exist");
+        	return false;
         }
     }
 
-    @ResponseStatus( HttpStatus.NO_CONTENT )
-    public void deleteStudent( int id ){
+    public Boolean deleteStudent( Long id ){
         if( studentRepository.findById(id).isPresent() ){
             studentRepository.deleteById(id);
+            return true;
         }
         else{
-        	throw new ResponseStatusException( HttpStatus.NOT_FOUND, "Student not found" );
+        	return false;
         }
     }
 
