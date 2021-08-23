@@ -22,12 +22,8 @@ public class StudentService {
     	return studentRepository.findAll();
     }
 
-    public Student getStudentById( Long id ){
-        Optional<Student> student = studentRepository.findById(id);
-        if( student.isEmpty() ) {
-        	throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Student does not exist");
-        }
-        return student.get();
+    public Optional<Student> getStudentById( Long id ){
+        return studentRepository.findById(id);
     }
 
     public Boolean createStudent( Student student ) {

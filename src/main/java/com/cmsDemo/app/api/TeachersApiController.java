@@ -1,5 +1,6 @@
 package com.cmsDemo.app.api;
 
+import com.cmsDemo.app.model.Section;
 import com.cmsDemo.app.model.Student;
 import com.cmsDemo.app.model.Teacher;
 import com.cmsDemo.app.repository.TeacherRepository;
@@ -25,6 +26,7 @@ import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2021-08-20T11:36:07.743+05:30")
 
 @RestController
@@ -64,8 +66,13 @@ public class TeachersApiController implements TeachersApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-            	Teacher teacher = teacherService.getTeacherById(teacherId);
-                return new ResponseEntity<Teacher>(teacher, HttpStatus.OK);
+            	Optional<Teacher> teacher = teacherService.getTeacherById(teacherId);
+            	if( teacher.isPresent() ) {
+            		return new ResponseEntity<Teacher>(teacher.get(), HttpStatus.OK);
+            	}
+            	else {
+            		return new ResponseEntity<Teacher>(HttpStatus.NOT_FOUND);
+            	}
             } catch (Exception e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<Teacher>(HttpStatus.INTERNAL_SERVER_ERROR);

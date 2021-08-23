@@ -17,6 +17,7 @@ import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2021-08-20T11:36:07.743+05:30")
 
 @RestController
@@ -56,10 +57,16 @@ public class StudentsApiController implements StudentsApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-            	Student student = studentService.getStudentById(studentId);
-                return new ResponseEntity<Student>(student, HttpStatus.OK);
+            	Optional<Student> student = studentService.getStudentById(studentId);
+            	if( student.isPresent() ) {
+            		return new ResponseEntity<Student>(student.get(), HttpStatus.OK);
+            	}
+            	else {
+            		return new ResponseEntity<Student>(HttpStatus.NOT_FOUND);
+            	}
             } catch (Exception e) {
-                log.error("Couldn't serialize response for content type application/json", e);
+            	//System.out.println(e.);
+                //log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<Student>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }

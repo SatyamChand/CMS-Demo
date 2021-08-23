@@ -20,9 +20,8 @@ public class TeacherService {
         return teacherRepository.findAll();
     }
 
-    public Teacher getTeacherById( Long id ){
-        Optional<Teacher> teacher = teacherRepository.findById(id);
-        return teacher.get();
+    public Optional<Teacher> getTeacherById( Long id ){
+        return teacherRepository.findById(id);
     }
 
     public Boolean createTeacher( Teacher teacher ) {

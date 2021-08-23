@@ -25,6 +25,7 @@ import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2021-08-20T11:36:07.743+05:30")
 
 @RestController
@@ -64,9 +65,15 @@ public class SectionsApiController implements SectionsApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-            	Section section = sectionService.getSectionById(sectionId);
-                return new ResponseEntity<Section>(section, HttpStatus.OK);
+            	Optional<Section> section = sectionService.getSectionById(sectionId);
+            	if( section.isPresent() ) {
+            		return new ResponseEntity<Section>(section.get(), HttpStatus.OK);
+            	}
+            	else {
+            		return new ResponseEntity<Section>(HttpStatus.NOT_FOUND);
+            	}
             } catch (Exception e) {
+            	System.out.println(e);
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<Section>(HttpStatus.INTERNAL_SERVER_ERROR);
             }

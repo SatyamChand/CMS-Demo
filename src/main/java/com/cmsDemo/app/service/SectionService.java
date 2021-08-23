@@ -20,9 +20,8 @@ public class SectionService{
         return sectionRepository.findAll();
     }
 
-    public Section getSectionById( String id ){
-        Optional<Section> section = sectionRepository.findById(id);
-        return section.get();
+    public Optional<Section> getSectionById( String id ){
+        return sectionRepository.findById(id);
     }
 
     public Boolean createSection( Section section ) {
