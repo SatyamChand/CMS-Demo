@@ -19,11 +19,7 @@ public class StudentService {
 
 
     public List<Student> getAllStudents(){
-    	List<Student> list = studentRepository.findAll();
-    	if( list.size() == 0 ) {
-    		throw new ResponseStatusException( HttpStatus.NO_CONTENT, "No entries available" );
-    	}
-        return list;
+    	return studentRepository.findAll();
     }
 
     public Student getStudentById( Long id ){
