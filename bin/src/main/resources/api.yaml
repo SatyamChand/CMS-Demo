@@ -1,0 +1,319 @@
+swagger: 3.0.27
+info:
+  description: Sample Swagger Demo
+  version: 2.0.0
+  title: CMS
+
+schemes:
+  - http
+
+definitions:
+  student:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      section:
+        type: string
+  teacher:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      sectionHead:
+        type: string
+      subject:
+        type: string
+  
+  section:
+    type: object
+    properties:
+      id:
+        type: string
+      head:
+        type: integer
+        format: int64
+      subjects:
+        type: array
+        items: subjectTeacher
+  subjectTeacher:
+    type: object
+    properties:
+      subject:
+        type: string
+      teacher:
+        type: integer
+        format: int64
+
+paths: 
+  /students:
+    get:
+      description: Returns a list of students
+      operationId: getAllStudents
+      produces:
+        - application/json
+      responses: 
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items: 
+              $ref: '#/definitions/student'
+        '204':
+          description: No students in DB
+    post:
+      description: Create new student
+      operationId: createStudent
+      consumes:
+        - application/json
+      parameters: 
+        - in: body
+          name: body
+          description: Student object
+          required: true
+          allowMultiple: false
+          schema:
+              $ref: '#/definitions/Student'
+      responses:
+        '200':
+          description: Successful operation
+        '409' :
+          description: Student with id already exists
+    put:
+      description: Update student
+      operationId: updateStudent
+      consumes:
+        - application/json
+      parameters: 
+        - in: body
+          name: body
+          description: Student object
+          required: true
+          allowMultiple: false
+          schema:
+              $ref: '#/definitions/Student'
+      responses:
+        '200':
+          description: Successful operation
+        '404' :
+          description: Student with id does not exists
+  '/students/{studentId}' : 
+    get:
+      description: Get a student using ID
+      operationId: getStudentById
+      produces:
+        - application/json
+      parameters:
+        - name: studentId
+          in: path
+          description: ID of Student to return
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Successful operation
+          schema: 
+            $ref: '#/definitions/student'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Student not found
+    delete:
+      description: Delete a student using ID
+      operationId: deleteStudent
+      parameters:
+        - name: studentId
+          in: path
+          description: ID of Student
+          required: true
+          type: integer
+          format: int64
+      responses:
+      '200':
+        description: Successful operation
+      '404':
+        description: Student not found
+        
+  /teachers:
+    get:
+      description: Returns a list of teachers
+      operationId: getAllTeachers
+      produces:
+        - application/json
+      responses: 
+        '200':
+          description: Successful operation
+          schema:
+            type: array
+            items: 
+              $ref: '#/definitions/student'
+        '204':
+          description: No teachers in DB
+    post:
+      description: Create new teacher
+      operationId: createTeacher
+      consumes:
+        - application/json
+      parameters: 
+        - in: body
+          name: body
+          description: teachers object
+          required: true
+          allowMultiple: false
+          schema:
+              $ref: '#/definitions/teacher'
+      responses:
+        '200':
+          description: Successful operation
+        '409' :
+          description: Teacher with id already exists
+    put:
+      description: Update teacher
+      operationId: updateTeacher
+      consumes:
+        - application/json
+      parameters: 
+        - in: body
+          name: body
+          description: teachers object
+          required: true
+          allowMultiple: false
+          schema:
+              $ref: '#/definitions/teacher'
+      responses:
+        '200':
+          description: Successful operation
+        404 :
+          description: Teacher with id does not exists
+  '/teachers/{teacherId}' : 
+    get:
+      description: Get a teacher using ID
+      operationId: getTeacherById
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: teacherId
+          description: teacher id to retrive data
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Successful operation
+          schema: 
+            $ref: '#/definitions/teacher'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Teacher not found
+    delete:
+      description: Delete a teacher using ID
+      operationId: deleteTeacher
+      parameters:
+        - in: path
+          name: teacherId
+          description: teacher id to delete
+          required: true
+          type: integer
+          foramt: int64
+      responses:
+      '200':
+        description: Successful operation
+      '404':
+        description: Teacher not found
+        
+  /sections:
+    get:
+      description: Returns a list of sections
+      operationId: getAllSections
+      produces:
+        - application/json
+      responses: 
+        '200':
+          description: Successful operation
+          schema:
+            type: array
+            items: 
+              $ref: '#/definitions/section'
+        '204':
+          description: No sections in DB
+    post:
+      description: Create new section
+      operationId: createSection
+      consumes:
+        - application/json
+      parameters: 
+        - in: body
+          name: body
+          description: section object
+          required: true
+          allowMultiple: false
+          schema:
+              $ref: '#/definitions/section'
+      responses:
+        '200':
+          description: Successful operation
+        '409' :
+          description: Section with id already exists
+    put:
+      description: Update section
+      operationId: updateSection
+      consumes:
+        - application/json
+      parameters: 
+        - in: body
+          name: body
+          description: section object
+          required: true
+          allowMultiple: false
+          schema:
+              $ref: '#/definitions/section'
+      responses:
+        '200':
+          description: Successful operation
+        '404' :
+          description: Section with id does not exists
+  '/sections/{sectionId}' : 
+    get:
+      description: Get a section using ID
+      operationId: getSectionById
+      produces:
+        - application/json
+      parameters:
+        - name: sectionid
+          in: path
+          description: ID of section to return
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Successful operation
+          schema: 
+            $ref: '#/definitions/section'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Section not found
+    delete:
+      description: Delete a section using ID
+      operationId: deleteSection
+      parameters:
+        - name: sectionId
+          in: path
+          description: ID of section to return
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Successful operation
+        '404':
+          description: Section not found
+        
